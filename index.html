@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiImages</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main>
+        <!--<input type="file" id="files" name="files" multiple>-->
+        <div class="dropzone" id="files">
+            <div class="dropzone-inner">
+                <img class="uploader-icon" src="./assets/img/upload.svg" alt="upload images icon">
+                <p class="sub-title">Drag your files here</p>
+            </div>
+        </div>
+
+        <div class="field-compress">
+            <input type="checkbox" name="compress" class="fld-compress" id="compress">
+            <label for="compress">Apply compression</label>
+        </div>
+
+        <div class="progress-file"></div>
+    </main>
+    <script src="./optimages.js"></script>
+</body>
+</html>

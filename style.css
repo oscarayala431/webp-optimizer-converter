@@ -1,0 +1,70 @@
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+body{
+    font-family: "Open Sans";
+    margin: 0;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+div.dropzone{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 10rem 1rem;
+    background-color: #E4F3F6;
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    max-width: 500px;
+}
+div.dropzone.active{
+    animation: 2.5s ease 0s infinite pulse;
+}
+@keyframes pulse {
+    0%, 50%, 100% {  background: #fff; }
+    30%, 80% { background: #d6ecee; }
+}
+div.dropzone-inner{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+img.uploader-icon{
+    max-width: 70px;
+}
+p.sub-title{
+    font-weight: 600;
+}
+div.field-compress{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+input.fld-compress{
+    margin: 0 .5rem 0 0;
+}
+progress{
+    margin-bottom: .5rem;
+}
+div.progress-file{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}

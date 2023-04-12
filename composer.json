@@ -1,0 +1,10 @@
+{
+    "name": "oayala/optimages",
+    "description": "PHP optimize images and convert webp",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "intervention/image": "^2.7"
+    }
+}
