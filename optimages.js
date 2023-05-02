@@ -118,6 +118,20 @@ $files.addEventListener("dragleave", e => {
     $files.classList.remove("active");
 });
 
+let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bmp'];
+const validateFormatFiles = (files) => {
+    let valid = false;
+    files.forEach(el => {
+        if(allowedExtension.includes(el.type)){
+            valid = true;
+        }else{
+            valid = false;
+        }
+    });
+
+    return valid;
+}
+
 $files.addEventListener("drop", e => {
     e.preventDefault();
     e.stopPropagation();
@@ -127,9 +141,13 @@ $files.addEventListener("drop", e => {
     console.log($fldcompress.checked);
 
     const files = Array.from(e.dataTransfer.files);
-    files.forEach((el, index) => progressUpload(el, isCompress, index+1, e.dataTransfer.files.length));
 
-    $files.classList.remove("active");
+    if(validateFormatFiles(files)){
+        files.forEach((el, index) => progressUpload(el, isCompress, index+1, e.dataTransfer.files.length));
+        $files.classList.remove("active");
+    }else{
+        $files.classList.remove("active");
+    }
 });
 
 /*d.addEventListener("change", (e) => {
