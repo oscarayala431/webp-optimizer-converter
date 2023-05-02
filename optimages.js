@@ -70,6 +70,9 @@ const downloadZip = (file) => {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+
+    //clean previous urls images
+    imgUrls = [];
 }
 
 const progressUpload = (file, isCompress, numberFile, totalFiles) => {
