@@ -4,7 +4,7 @@ const $files = d.getElementById('files');
 const $innerprogress = d.querySelector('div.progress-file');
 const $fldcompress = d.querySelector("input.fld-compress");
 
-const uploader = (file, isCompress) => {
+const uploader = (file, isCompress, numberFile, totalFiles) => {
     //console.log(file);
 
     const formData = new FormData();
@@ -15,16 +15,64 @@ const uploader = (file, isCompress) => {
         method: "POST",
         body: formData,
     })
-    .then(resp => resp.text())
+    .then(resp => resp.json())
     .then(data => {
-        console.log(data);
+        getImagesOptimization(data.target, data.namefile, numberFile, totalFiles);
     })
     .catch(err => {
         console.log(`Error: ${err}`);
     });
 }
 
-const progressUpload = (file, isCompress) => {
+//Get images data after optimization
+let imgUrls = [];
+const getImagesOptimization = async (destinationFile, nameFile, numberFile, totalFiles) => {
+    imgUrls.push({destinationFile, nameFile});
+
+    //Verify is the last file to process
+    if(numberFile == totalFiles){
+        //Get images data after optimization
+        const promisesImg = imgUrls.map(async (url) => {
+            const res = await fetch(url.destinationFile);
+            const blob = await res.blob();
+            return {blob, nameFile: url.nameFile}
+        });
+
+        const res = await Promise.all(promisesImg);
+
+        //create zip of images
+        imgsCompressFiles(res);
+    }
+}
+
+//Create compressed files JSZip
+const imgsCompressFiles = async (imgFiles) => {
+    const zip = new JSZip();
+
+    imgFiles.forEach(ele => {
+        zip.file(`${ele.nameFile}.webp`, ele.blob);
+    });
+
+    const zipFile = await zip.generateAsync({type: 'blob'});
+    //download zip
+    downloadZip(zipFile);
+}
+
+//download zip files
+const downloadZip = (file) => {
+    const a = document.createElement('a');
+    a.download = 'optimages.zip';
+    const url = URL.createObjectURL(file);
+    a.href = url;
+    a.style.display = 'none';
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+const progressUpload = (file, isCompress, numberFile, totalFiles) => {
     const $progress = d.createElement("progress");
     const $span = d.createElement("span");
 
@@ -43,7 +91,7 @@ const progressUpload = (file, isCompress) => {
     });
 
     fileReader.addEventListener("loadend", e => {
-        uploader(file, isCompress);
+        uploader(file, isCompress, numberFile, totalFiles);
 
         setTimeout(() => {
             $innerprogress.removeChild($progress);
@@ -76,7 +124,7 @@ $files.addEventListener("drop", e => {
     console.log($fldcompress.checked);
 
     const files = Array.from(e.dataTransfer.files);
-    files.forEach(el => progressUpload(el, isCompress));
+    files.forEach((el, index) => progressUpload(el, isCompress, index+1, e.dataTransfer.files.length));
 
     $files.classList.remove("active");
 });

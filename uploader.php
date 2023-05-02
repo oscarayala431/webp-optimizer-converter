@@ -30,6 +30,8 @@ if(isset($_FILES["file"])){
             "statusText" => "Archivo {$name_file} optimizado con éxito.",
             "files" => $_FILES["file"],
             "compress" => $_POST['iscompress'],
+            "target" => "/content/uploads/{$filename}.webp",
+            "namefile" => $filename,
         );
     }else{
         $res = array(
