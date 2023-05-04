@@ -68,3 +68,19 @@ div.progress-file{
     display: flex;
     flex-direction: column;
 }
+div.spinnerFiles{
+    position: absolute;
+    z-index: 99;
+    background-color: #FFFFFF;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+div.spinnerFiles img{
+    max-width: max-content;
+}

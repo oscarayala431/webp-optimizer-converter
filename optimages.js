@@ -31,6 +31,11 @@ const getImagesOptimization = async (destinationFile, nameFile, numberFile, tota
 
     //Verify is the last file to process
     if(numberFile == totalFiles){
+        document.body.insertAdjacentHTML("afterbegin", `<div class="spinnerFiles">
+        <img src="./assets/img/spinning.gif" alt="spinning">
+        <p class="text">Preparing files, wait a few minutes...</p>
+    </div>`);
+
         //Get images data after optimization
         const promisesImg = imgUrls.map(async (url) => {
             const res = await fetch(url.destinationFile);
@@ -73,6 +78,9 @@ const downloadZip = (file) => {
 
     //clean previous urls images
     imgUrls = [];
+
+    //Remove loader spinner
+    document.querySelector("div.spinnerFiles").remove();
 }
 
 const progressUpload = (file, isCompress, numberFile, totalFiles) => {
@@ -120,14 +128,14 @@ $files.addEventListener("dragleave", e => {
 
 let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bmp'];
 const validateFormatFiles = (files) => {
-    let valid = false;
-    files.forEach(el => {
-        if(allowedExtension.includes(el.type)){
-            valid = true;
-        }else{
+    let valid = true;
+
+    for(let item of files){
+        if(!allowedExtension.includes(item.type)){
             valid = false;
+            break;
         }
-    });
+    }
 
     return valid;
 }
@@ -146,6 +154,12 @@ $files.addEventListener("drop", e => {
         files.forEach((el, index) => progressUpload(el, isCompress, index+1, e.dataTransfer.files.length));
         $files.classList.remove("active");
     }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Files with invalid formats',
+        })
+
         $files.classList.remove("active");
     }
 });
