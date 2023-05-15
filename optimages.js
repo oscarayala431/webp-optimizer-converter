@@ -26,9 +26,7 @@ const uploader = (file, isCompress, numberFile, totalFiles) => {
 
 //Get images data after optimization
 let imgUrls = [];
-const getImagesOptimization = async (destinationFile, nameFile, numberFile, totalFiles) => {
-    imgUrls.push({destinationFile, nameFile});
-
+const getImagesOptimization = (destinationFile, nameFile, numberFile, totalFiles) => {
     //Verify is the last file to process
     if(numberFile == totalFiles){
         document.body.insertAdjacentHTML("afterbegin", `<div class="spinnerFiles">
@@ -37,16 +35,19 @@ const getImagesOptimization = async (destinationFile, nameFile, numberFile, tota
     </div>`);
 
         //Get images data after optimization
-        const promisesImg = imgUrls.map(async (url) => {
-            const res = await fetch(url.destinationFile);
-            const blob = await res.blob();
-            return {blob, nameFile: url.nameFile}
+        const promisesImg = imgUrls.map(url => {
+            return fetch(`http://localhost/content/uploads/${url}.webp`)
+                .then(resp => resp.blob())
+                .then(data => {
+                return { blob: data, nameFile: url };
+                });
         });
-
-        const res = await Promise.all(promisesImg);
-
-        //create zip of images
-        imgsCompressFiles(res);
+          
+        Promise.all(promisesImg)
+            .then(results => {
+                //create zip of images
+                imgsCompressFiles(results);
+        });
     }
 }
 
@@ -151,7 +152,10 @@ $files.addEventListener("drop", e => {
     const files = Array.from(e.dataTransfer.files);
 
     if(validateFormatFiles(files)){
-        files.forEach((el, index) => progressUpload(el, isCompress, index+1, e.dataTransfer.files.length));
+        files.forEach((el, index) => {
+            imgUrls.push(el.name.slice(0, el.name.lastIndexOf('.')));
+            progressUpload(el, isCompress, index+1, e.dataTransfer.files.length);
+        });
         $files.classList.remove("active");
     }else{
         Swal.fire({
@@ -163,12 +167,3 @@ $files.addEventListener("drop", e => {
         $files.classList.remove("active");
     }
 });
-
-/*d.addEventListener("change", (e) => {
-    if(e.target === $files){
-        //onsole.log(e.target.files);
-
-        const files = Array.from(e.target.files);
-        files.forEach(el => progressUpload(el));
-    }
-})*/
