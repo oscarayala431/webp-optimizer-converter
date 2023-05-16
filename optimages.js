@@ -4,11 +4,13 @@ const $files = d.getElementById('files');
 const $innerprogress = d.querySelector('div.progress-file');
 const $fldcompress = d.querySelector("input.fld-compress");
 
-const uploader = (file, isCompress, numberFile, totalFiles) => {
-    //console.log(file);
+//Process Files with Image Intervetion PHP library
+const uploader = (file, isCompress, numberFile, totalFiles, files) => {
 
     const formData = new FormData();
-    formData.append("file", file);
+    for(let file of files){
+        formData.append("files[]", file);
+    }
     formData.append("iscompress", isCompress);
 
     fetch('./uploader.php', {
@@ -84,7 +86,8 @@ const downloadZip = (file) => {
     document.querySelector("div.spinnerFiles").remove();
 }
 
-const progressUpload = (file, isCompress, numberFile, totalFiles) => {
+//View progress individual upload to server
+const progressUpload = (file, isCompress, numberFile, totalFiles, files) => {
     const $progress = d.createElement("progress");
     const $span = d.createElement("span");
 
@@ -103,7 +106,9 @@ const progressUpload = (file, isCompress, numberFile, totalFiles) => {
     });
 
     fileReader.addEventListener("loadend", e => {
-        uploader(file, isCompress, numberFile, totalFiles);
+        if(files.length == numberFile){
+            uploader(file, isCompress, numberFile, totalFiles, files);
+        }
 
         setTimeout(() => {
             $innerprogress.removeChild($progress);
@@ -127,6 +132,7 @@ $files.addEventListener("dragleave", e => {
     $files.classList.remove("active");
 });
 
+//Validate extension files upload
 let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png','image/gif','image/bmp'];
 const validateFormatFiles = (files) => {
     let valid = true;
@@ -147,14 +153,13 @@ $files.addEventListener("drop", e => {
 
     //Verify that compression is necessary
     let isCompress = $fldcompress.checked;
-    console.log($fldcompress.checked);
 
-    const files = Array.from(e.dataTransfer.files);
+    const files = Array.from(e.dataTransfer.files).sort();
 
     if(validateFormatFiles(files)){
         files.forEach((el, index) => {
             imgUrls.push(el.name.slice(0, el.name.lastIndexOf('.')));
-            progressUpload(el, isCompress, index+1, e.dataTransfer.files.length);
+            progressUpload(el, isCompress, index+1, e.dataTransfer.files.length, files);
         });
         $files.classList.remove("active");
     }else{
@@ -162,7 +167,7 @@ $files.addEventListener("drop", e => {
             icon: 'error',
             title: 'Oops...',
             text: 'Files with invalid formats',
-        })
+        });
 
         $files.classList.remove("active");
     }
