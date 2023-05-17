@@ -7,6 +7,11 @@ const $fldcompress = d.querySelector("input.fld-compress");
 //Process Files with Image Intervetion PHP library
 const uploader = (file, isCompress, numberFile, totalFiles, files) => {
 
+    document.body.insertAdjacentHTML("afterbegin", `<div class="spinnerFiles">
+        <img src="./assets/img/spinning.gif" alt="spinning">
+        <p class="text">Preparing files, wait a few minutes...</p>
+    </div>`);
+
     const formData = new FormData();
     for(let file of files){
         formData.append("files[]", file);
@@ -31,9 +36,12 @@ let imgUrls = [];
 const getImagesOptimization = (destinationFile, nameFile, numberFile, totalFiles) => {
     //Verify is the last file to process
     if(numberFile == totalFiles){
+        //Remove previous loader spinner preparing files
+        document.querySelector("div.spinnerFiles").remove();
+
         document.body.insertAdjacentHTML("afterbegin", `<div class="spinnerFiles">
         <img src="./assets/img/spinning.gif" alt="spinning">
-        <p class="text">Preparing files, wait a few minutes...</p>
+        <p class="text">Compressing files, wait a few minutes...</p>
     </div>`);
 
         //Get images data after optimization
@@ -83,7 +91,9 @@ const downloadZip = (file) => {
     imgUrls = [];
 
     //Remove loader spinner
-    document.querySelector("div.spinnerFiles").remove();
+    setTimeout(() => {
+        document.querySelector("div.spinnerFiles").remove();
+    }, 3000);
 }
 
 //View progress individual upload to server
