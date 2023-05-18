@@ -24,7 +24,7 @@ const uploader = (file, isCompress, numberFile, totalFiles, files) => {
     })
     .then(resp => resp.json())
     .then(data => {
-        getImagesOptimization(data.target, data.namefile, numberFile, totalFiles);
+        getImagesOptimization(data.passfiles, data.errorfiles, numberFile, totalFiles);
     })
     .catch(err => {
         console.log(`Error: ${err}`);
@@ -33,7 +33,7 @@ const uploader = (file, isCompress, numberFile, totalFiles, files) => {
 
 //Get images data after optimization
 let imgUrls = [];
-const getImagesOptimization = (destinationFile, nameFile, numberFile, totalFiles) => {
+const getImagesOptimization = (passfiles, errorfiles, numberFile, totalFiles) => {
     //Verify is the last file to process
     if(numberFile == totalFiles){
         //Remove previous loader spinner preparing files
@@ -44,20 +44,44 @@ const getImagesOptimization = (destinationFile, nameFile, numberFile, totalFiles
         <p class="text">Compressing files, wait a few minutes...</p>
     </div>`);
 
-        //Get images data after optimization
-        const promisesImg = imgUrls.map(url => {
-            return fetch(`http://localhost/content/uploads/${url}.webp`)
-                .then(resp => resp.blob())
-                .then(data => {
-                return { blob: data, nameFile: url };
+        if(passfiles.length > 0){
+            //Get images data after optimization
+            const promisesImg = passfiles.map(url => {
+                return fetch(`http://localhost/content/uploads/${url}.webp`)
+                    .then(resp => resp.blob())
+                    .then(data => {
+                    return { blob: data, nameFile: url };
+                    });
+            });
+            
+            Promise.all(promisesImg)
+                .then(results => {
+                    //create zip of images
+                    imgsCompressFiles(results);
+            });
+
+            //Display user error files with unsupported format
+            if(errorfiles.length > 0){
+                const listErrorFiles = errorfiles.map(item => `<li>${item}</li>`).join('');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Rejected files!',
+                    html: `<p class="alert-text">Files rejected for incompatible format:</p> <ul class="alert-list">${listErrorFiles}</ul>`,
                 });
-        });
-          
-        Promise.all(promisesImg)
-            .then(results => {
-                //create zip of images
-                imgsCompressFiles(results);
-        });
+            }
+        }else{
+            //clean previous urls images
+            imgUrls = [];
+
+            //Remove loader spinner compress files
+            document.querySelector("div.spinnerFiles").remove();
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Files with unsupported format, try again!',
+            });
+        }
     }
 }
 

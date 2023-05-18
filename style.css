@@ -84,3 +84,9 @@ div.spinnerFiles{
 div.spinnerFiles img{
     max-width: max-content;
 }
+p.alert-list{
+    text-align: left;
+}
+ul.alert-list{
+    text-align: left;
+}
