@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Barlow";
+    src: url(./assets/fonts/Montserrat-Medium.ttf) format('truetype');
+}
+
 *,
 *::before,
 *::after{
@@ -6,6 +11,26 @@
 body{
     font-family: "Open Sans";
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.wrap-header {
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 1248px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+.wrap-header .col1,
+.wrap-header .col2{
+    display: flex;
+    align-items: center;
+}
+p.logo-text{
+    font-family: "Barlow";
+    margin-left: .4rem;
 }
 main{
     display: flex;
@@ -13,8 +38,9 @@ main{
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 100vh;
+    flex-grow: 1;
     padding: 1rem;
+    border-top: 1px solid #CBD5E1;
 }
 div.dropzone{
     position: relative;
@@ -89,4 +115,20 @@ p.alert-list{
 }
 ul.alert-list{
     text-align: left;
+}
+footer{
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 1248px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+.ftautor{
+    display: flex;
+    align-items: center;
+}
+.ftautor img{
+    max-width: 30px;
+    margin-left: .4rem;
 }
