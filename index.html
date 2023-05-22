@@ -7,8 +7,9 @@
     <title>OptiImages</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./assets/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body>
+<body class="light">
     <header class="wrap-header">
         <div class="col1">
             <div class="wrap-logo">
@@ -17,7 +18,15 @@
             <p class="logo-text">OPTIMAGES.</p>
         </div>
 
-        <div class="col2">Light/Dark</div>
+        <div class="col2">
+            <input class="checkbox" type="checkbox" id="toggle" />
+
+            <label class="toggle" for="toggle">
+            <i class="fas fa-sun icon--light icon-theme"></i>
+            <i class="fas fa-moon icon--dark icon-theme"></i>
+            <span class="ball"></span>
+            </label>
+        </div>
     </header>
 
     <main>
@@ -50,5 +59,6 @@
     <script src="./optimages.js"></script>
     <script src="./assets/js/jszip/dist/jszip.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="./theme.js"></script>
 </body>
 </html>

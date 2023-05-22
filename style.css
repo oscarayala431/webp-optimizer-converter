@@ -28,9 +28,15 @@ body{
     display: flex;
     align-items: center;
 }
+div.wrap-logo img{
+    max-width: 30px;
+}
 p.logo-text{
     font-family: "Barlow";
     margin-left: .4rem;
+}
+.dark p.logo-text{
+    color: #FFFFFF;
 }
 main{
     display: flex;
@@ -42,9 +48,15 @@ main{
     padding: 1rem;
     border-top: 1px solid #CBD5E1;
 }
+.dark main{
+    border: none;
+}
 div.inner-dropzone{
     width: 100%;
     max-width: 500px;
+}
+.dark div.dropzone{
+    background-color: #e3faff;
 }
 div.dropzone{
     position: relative;
@@ -85,6 +97,9 @@ div.field-compress{
     display: flex;
     align-items: center;
 }
+.dark div.field-compress{
+    color: #FFFFFF;
+}
 input.fld-compress{
     margin: 0 .5rem 0 0;
 }
@@ -95,6 +110,9 @@ div.progress-file{
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
+}
+.dark div.progress-file{
+    color: #FFFFFF;
 }
 div.spinnerFiles{
     position: absolute;
@@ -125,6 +143,9 @@ footer{
     max-width: 1248px;
     margin: 0 auto;
     justify-content: space-between;
+}
+.dark footer{
+    color: #FFFFFF;
 }
 .ftautor{
     display: flex;
@@ -164,3 +185,76 @@ footer{
     top: -1px;
     left: 50%;
 }
+.toggle {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 120px;
+    height: 60px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.checkbox {
+    display: none;
+}
+.icon {
+    width: 50%;
+    font-size: 32px;
+    line-height: 60px;
+    text-align: center;
+    z-index: 1;
+}
+.ball {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin: 7px;
+    z-index: 1;
+    transition: 0.2s;
+}
+/* ---- ---- Light Mode ---- ---- */
+.light {
+    background-color: #fafafa;
+  }
+  .light .toggle {
+    background: linear-gradient(145deg, #e1e1e1, #fff);
+    box-shadow: 3px 3px 4px #e6e6e6, -3px -3px 4px #fff;
+  }
+  .light .icon--light {
+    color: #fafafa;
+  }
+  .light .icon--dark {
+    color: #151d2a;
+  }
+  .light .ball {
+    background-color: #151d2a;
+  }
+  /* ---- ---- Dark Mode ---- ---- */
+  .dark {
+    background-color: #151d2a;
+  }
+  .dark .toggle {
+    background: #151d2a;
+    box-shadow: 3px 3px 3px #0e131b, -3px -3px 3px #1c2739;
+  }
+  .dark .icon--light {
+    color: #fafafa;
+  }
+  .dark .icon--dark {
+    color: #0e131b;
+  }
+  .icon-theme{
+    position: relative;
+    z-index: 2;
+    width: 50%;
+    text-align: center;
+    font-size: 25px;
+  }
+  .dark .ball {
+    background-color: #fafafa;
+    transition: 0.3s;
+    transform: translateX(60px);
+  }
