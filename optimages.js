@@ -4,6 +4,14 @@ const $files = d.getElementById('files');
 const $innerprogress = d.querySelector('div.progress-file');
 const $fldcompress = d.querySelector("input.fld-compress");
 
+const range = d.querySelector(".range");
+const bubble = d.querySelector(".bubble");
+
+//Check if the user wants to adjust the compression level
+$fldcompress.addEventListener("input", () => {
+    d.querySelector('div.range-wrap').classList.toggle("active");
+})
+
 //Process Files with Image Intervetion PHP library
 const uploader = (file, isCompress, numberFile, totalFiles, files) => {
 
@@ -17,6 +25,12 @@ const uploader = (file, isCompress, numberFile, totalFiles, files) => {
         formData.append("files[]", file);
     }
     formData.append("iscompress", isCompress);
+
+    if(isCompress){
+        formData.append("customQuality", range.value);
+    }else{
+        formData.append("customQuality", null);
+    }
 
     fetch('./uploader.php', {
         method: "POST",
@@ -206,3 +220,21 @@ $files.addEventListener("drop", e => {
         $files.classList.remove("active");
     }
 });
+
+//User select custom quality for image/s
+const setBubble = (range, bubble) => {
+    const val = range.value;
+    const min = range.min;
+    const max = range.max;
+    const newVal = Number(((val - min) * 100) / (max - min));
+    bubble.innerHTML = val;
+
+    // Sorta magic numbers based on size of the native UI thumb
+    bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+}
+
+range.addEventListener("input", () => {
+    setBubble(range, bubble);
+});
+
+setBubble(range, bubble);

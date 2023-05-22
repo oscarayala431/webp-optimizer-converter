@@ -13,6 +13,10 @@ if(isset($_FILES["files"])){
     $counter = 0;
     $image = new ImageManager();
 
+    if(isset($_POST['customQuality'])){
+        $quality = intval($_POST['customQuality']);
+    }
+
     foreach($_FILES['files']['name'] as $namefile){
         //Validation force image files only
         if(getimagesize($_FILES["files"]["tmp_name"][$counter])){
@@ -43,6 +47,7 @@ if(isset($_FILES["files"])){
             "target" => "http://" . $_SERVER['SERVER_NAME'] . "/content/uploads/example.webp",
             "passfiles" => $passFiles,
             "errorfiles" => $errorFiles,
+            "customQuality" => $_POST['customQuality'],
         );
     }else{
         header("HTTP/1.1 400 Bad Request");

@@ -21,10 +21,17 @@
     </header>
 
     <main>
-        <div class="dropzone" id="files">
-            <div class="dropzone-inner">
-                <img class="uploader-icon" src="./assets/img/upload.svg" alt="upload images icon">
-                <p class="sub-title">Drag your files here</p>
+        <div class="inner-dropzone">
+            <div class="dropzone" id="files">
+                <div class="dropzone-inner">
+                    <img class="uploader-icon" src="./assets/img/upload.svg" alt="upload images icon">
+                    <p class="sub-title">Drag your files here</p>
+                </div>
+            </div>
+
+            <div class="range-wrap">
+                <input type="range" class="range" min="0" max="100" value="60">
+                <output class="bubble"></output>
             </div>
         </div>
 

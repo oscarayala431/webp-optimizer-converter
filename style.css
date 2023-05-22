@@ -42,15 +42,17 @@ main{
     padding: 1rem;
     border-top: 1px solid #CBD5E1;
 }
+div.inner-dropzone{
+    width: 100%;
+    max-width: 500px;
+}
 div.dropzone{
     position: relative;
     z-index: 2;
-    width: 100%;
     padding: 10rem 1rem;
     background-color: #E4F3F6;
     outline: 2px dashed #92b0b3;
     outline-offset: -10px;
-    max-width: 500px;
 }
 div.dropzone.active{
     animation: 2.5s ease 0s infinite pulse;
@@ -131,4 +133,34 @@ footer{
 .ftautor img{
     max-width: 30px;
     margin-left: .4rem;
+}
+
+.range-wrap {
+    display: none;
+    position: relative;
+    margin: 0 auto 3rem;
+}
+.range-wrap.active{
+    display: block;
+}
+.range {
+    width: 100%;
+}
+.bubble {
+    background: red;
+    color: white;
+    padding: 4px 12px;
+    position: absolute;
+    border-radius: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.bubble::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: red;
+    top: -1px;
+    left: 50%;
 }
