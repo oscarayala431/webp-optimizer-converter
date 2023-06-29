@@ -70,8 +70,12 @@ const getImagesOptimization = (passfiles, errorfiles, numberFile, totalFiles) =>
             
             Promise.all(promisesImg)
                 .then(results => {
-                    //create zip of images
-                    imgsCompressFiles(results);
+                    //create zip of images or download single image
+                    if(results.length == 1){
+                        downloadSingleFile(results);
+                    }else{
+                        imgsCompressFiles(results);
+                    }
             });
 
             //Display user error files with unsupported format
@@ -110,6 +114,28 @@ const imgsCompressFiles = async (imgFiles) => {
     const zipFile = await zip.generateAsync({type: 'blob'});
     //download zip
     downloadZip(zipFile);
+}
+
+//download single file
+const downloadSingleFile = (file) => {
+    const a = document.createElement('a');
+    a.download = `${file[0].nameFile}.webp`;
+    const url = URL.createObjectURL(file[0].blob);
+    a.href = url;
+    a.style.display = 'none';
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    //clean previous urls images
+    imgUrls = [];
+
+    //Remove loader spinner
+    setTimeout(() => {
+        document.querySelector("div.spinnerFiles").remove();
+    }, 3000);
 }
 
 //download zip files
