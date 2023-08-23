@@ -258,3 +258,7 @@ footer{
     transition: 0.3s;
     transform: translateX(60px);
   }
+  body.dark div.spinnerFiles {
+    background-color: #1c2739;
+    color: #FFFFFF;
+}

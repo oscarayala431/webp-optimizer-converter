@@ -14,9 +14,11 @@ $fldcompress.addEventListener("input", () => {
 
 //Process Files with Image Intervetion PHP library
 const uploader = (file, isCompress, numberFile, totalFiles, files) => {
+    //Get current theme user selected for loader
+    const currentTheme = localStorage.getItem('themeapp');
 
     document.body.insertAdjacentHTML("afterbegin", `<div class="spinnerFiles">
-        <img src="./assets/img/spinning.gif" alt="spinning">
+        <img src="./assets/img/${(currentTheme == 'dark') ? 'spinningDark.gif' : 'spinning.gif'}" alt="spinning">
         <p class="text">Preparing files, wait a few minutes...</p>
     </div>`);
 
@@ -48,13 +50,16 @@ const uploader = (file, isCompress, numberFile, totalFiles, files) => {
 //Get images data after optimization
 let imgUrls = [];
 const getImagesOptimization = (passfiles, errorfiles, numberFile, totalFiles) => {
+    //Get current theme user selected
+    const currentTheme = localStorage.getItem('themeapp');
+
     //Verify is the last file to process
     if(numberFile == totalFiles){
         //Remove previous loader spinner preparing files
         document.querySelector("div.spinnerFiles").remove();
 
         document.body.insertAdjacentHTML("afterbegin", `<div class="spinnerFiles">
-        <img src="./assets/img/spinning.gif" alt="spinning">
+        <img src="./assets/img/${(currentTheme == 'dark') ? 'spinningDark.gif' : 'spinning.gif'}" alt="spinning">
         <p class="text">Compressing files, wait a few minutes...</p>
     </div>`);
 
